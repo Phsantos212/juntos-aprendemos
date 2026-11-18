@@ -10,33 +10,124 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AtividadesRouteImport } from './routes/atividades'
+import { Route as BibliotecaRouteImport } from './routes/biblioteca'
+import { Route as CursosRouteImport } from './routes/cursos'
+import { Route as Ods4RouteImport } from './routes/ods4'
+import { Route as PainelRouteImport } from './routes/painel'
+import { Route as CursosIndexRouteImport } from './routes/cursos.index'
+import { Route as CursosIdRouteImport } from './routes/cursos.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AtividadesRoute = AtividadesRouteImport.update({
+  id: '/atividades',
+  path: '/atividades',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BibliotecaRoute = BibliotecaRouteImport.update({
+  id: '/biblioteca',
+  path: '/biblioteca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CursosRoute = CursosRouteImport.update({
+  id: '/cursos',
+  path: '/cursos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Ods4Route = Ods4RouteImport.update({
+  id: '/ods4',
+  path: '/ods4',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PainelRoute = PainelRouteImport.update({
+  id: '/painel',
+  path: '/painel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CursosIndexRoute = CursosIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CursosRoute,
+} as any)
+const CursosIdRoute = CursosIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => CursosRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/atividades': typeof AtividadesRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/cursos': typeof CursosRouteWithChildren
+  '/ods4': typeof Ods4Route
+  '/painel': typeof PainelRoute
+  '/cursos/$id': typeof CursosIdRoute
+  '/cursos/': typeof CursosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/atividades': typeof AtividadesRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/ods4': typeof Ods4Route
+  '/painel': typeof PainelRoute
+  '/cursos/$id': typeof CursosIdRoute
+  '/cursos': typeof CursosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/atividades': typeof AtividadesRoute
+  '/biblioteca': typeof BibliotecaRoute
+  '/cursos': typeof CursosRouteWithChildren
+  '/ods4': typeof Ods4Route
+  '/painel': typeof PainelRoute
+  '/cursos/$id': typeof CursosIdRoute
+  '/cursos/': typeof CursosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/atividades'
+    | '/biblioteca'
+    | '/cursos'
+    | '/ods4'
+    | '/painel'
+    | '/cursos/$id'
+    | '/cursos/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/atividades'
+    | '/biblioteca'
+    | '/ods4'
+    | '/painel'
+    | '/cursos/$id'
+    | '/cursos'
+  id:
+    | '__root__'
+    | '/'
+    | '/atividades'
+    | '/biblioteca'
+    | '/cursos'
+    | '/ods4'
+    | '/painel'
+    | '/cursos/$id'
+    | '/cursos/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AtividadesRoute: typeof AtividadesRoute
+  BibliotecaRoute: typeof BibliotecaRoute
+  CursosRoute: typeof CursosRouteWithChildren
+  Ods4Route: typeof Ods4Route
+  PainelRoute: typeof PainelRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +139,78 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/atividades': {
+      id: '/atividades'
+      path: '/atividades'
+      fullPath: '/atividades'
+      preLoaderRoute: typeof AtividadesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/biblioteca': {
+      id: '/biblioteca'
+      path: '/biblioteca'
+      fullPath: '/biblioteca'
+      preLoaderRoute: typeof BibliotecaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cursos': {
+      id: '/cursos'
+      path: '/cursos'
+      fullPath: '/cursos'
+      preLoaderRoute: typeof CursosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ods4': {
+      id: '/ods4'
+      path: '/ods4'
+      fullPath: '/ods4'
+      preLoaderRoute: typeof Ods4RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/painel': {
+      id: '/painel'
+      path: '/painel'
+      fullPath: '/painel'
+      preLoaderRoute: typeof PainelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cursos/': {
+      id: '/cursos/'
+      path: '/'
+      fullPath: '/cursos/'
+      preLoaderRoute: typeof CursosIndexRouteImport
+      parentRoute: typeof CursosRoute
+    }
+    '/cursos/$id': {
+      id: '/cursos/$id'
+      path: '/$id'
+      fullPath: '/cursos/$id'
+      preLoaderRoute: typeof CursosIdRouteImport
+      parentRoute: typeof CursosRoute
+    }
   }
 }
 
+interface CursosRouteChildren {
+  CursosIdRoute: typeof CursosIdRoute
+  CursosIndexRoute: typeof CursosIndexRoute
+}
+
+const CursosRouteChildren: CursosRouteChildren = {
+  CursosIdRoute: CursosIdRoute,
+  CursosIndexRoute: CursosIndexRoute,
+}
+
+const CursosRouteWithChildren =
+  CursosRoute._addFileChildren(CursosRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AtividadesRoute: AtividadesRoute,
+  BibliotecaRoute: BibliotecaRoute,
+  CursosRoute: CursosRouteWithChildren,
+  Ods4Route: Ods4Route,
+  PainelRoute: PainelRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
