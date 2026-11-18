@@ -15,6 +15,8 @@ export const Route = createFileRoute("/atividades")({
     { name: "description", content: "Questionário sobre a ODS 4 com correção automática e feedback imediato." },
     { property: "og:title", content: "Atividades e simulados" },
     { property: "og:description", content: "Questionário com correção automática e feedback." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ] }),
   component: Atividades,
 });

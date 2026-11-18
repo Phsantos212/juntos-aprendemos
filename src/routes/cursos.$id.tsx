@@ -1,9 +1,12 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { CheckCircle2, Circle, Award, PlayCircle, FileText, Headphones } from "lucide-react";
+import { CheckCircle2, Circle, Award, BookOpen } from "lucide-react";
 import { courses } from "@/lib/data";
 import { useProgress } from "@/lib/progress";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { LessonContent } from "@/components/LessonContent";
+import { courseLessons } from "@/lib/lessons";
 
 export const Route = createFileRoute("/cursos/$id")({
   loader: ({ params }) => {
@@ -16,17 +19,17 @@ export const Route = createFileRoute("/cursos/$id")({
     { name: "description", content: loaderData.description },
     { property: "og:title", content: loaderData.title },
     { property: "og:description", content: loaderData.description },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ] : [{ title: "Curso indisponível" }, { name: "robots", content: "noindex" }] }),
   component: Curso,
 });
-
-const formats = [PlayCircle, FileText, Headphones, FileText];
-const formatNames = ["Videoaula (com legendas)", "Texto educativo + PDF", "Podcast + transcrição", "Atividade prática"];
 
 function Curso() {
   const c = Route.useLoaderData();
   const { p, update } = useProgress();
   const done = p.lessonsDone[c.id] ?? [];
+  const lessons = courseLessons[c.id] ?? [];
   const pct = Math.round((done.length / c.modules.length) * 100);
   const toggle = (i: number) => update((s) => {
     const cur = s.lessonsDone[c.id] ?? [];
@@ -41,20 +44,29 @@ function Curso() {
       <dl className="mt-4 flex flex-wrap gap-6 text-sm"><div><dt className="text-muted-foreground">Professor(a)</dt><dd>{c.teacher}</dd></div><div><dt className="text-muted-foreground">Carga horária</dt><dd>{c.hours} horas</dd></div><div><dt className="text-muted-foreground">Conclusão</dt><dd>{pct}%</dd></div></dl>
       <Progress value={pct} className="mt-4" aria-label={`${pct}% concluído`} />
       <h2 className="mt-10 text-2xl font-semibold">Conteúdo programático</h2>
-      <ol className="mt-4 space-y-3">
+      <Accordion key={c.id} type="single" collapsible defaultValue="lesson-0" className="mt-4 border-t">
         {c.modules.map((m, i) => {
-          const isDone = done.includes(i); const Icon = formats[i % 4]!;
+          const isDone = done.includes(i);
+          const lesson = lessons[i];
+          if (!lesson) return null;
           return (
-            <li key={m} className="flex items-center gap-4 rounded-xl border bg-card p-4">
-              <Icon className="h-6 w-6 shrink-0 text-primary" aria-hidden />
-              <div className="flex-1"><p className="font-medium">Aula {i + 1}: {m}</p><p className="text-sm text-muted-foreground">{formatNames[i % 4]}</p></div>
-              <Button variant={isDone ? "secondary" : "outline"} size="sm" onClick={() => toggle(i)} aria-pressed={isDone}>
-                {isDone ? <CheckCircle2 className="text-success" /> : <Circle />}{isDone ? "Concluída" : "Marcar concluída"}
-              </Button>
-            </li>
+            <AccordionItem key={m} value={`lesson-${i}`}>
+              <AccordionTrigger className="gap-3 py-5 text-base">
+                {isDone ? <CheckCircle2 className="h-6 w-6 shrink-0 text-success" aria-hidden /> : <BookOpen className="h-6 w-6 shrink-0 text-primary" aria-hidden />}
+                <span className="min-w-0 flex-1"><span className="block font-semibold">Aula {i + 1}: {m}</span><span className="mt-1 block text-sm font-normal text-muted-foreground">{isDone ? "Concluída" : "Leitura, prática e referências"}</span></span>
+              </AccordionTrigger>
+              <AccordionContent className="pb-6">
+                <LessonContent lesson={lesson} referencePrefix={`${c.id}-${i}`} />
+                <div className="mt-6 flex justify-end">
+                  <Button variant={isDone ? "secondary" : "outline"} size="sm" onClick={() => toggle(i)} aria-pressed={isDone}>
+                    {isDone ? <CheckCircle2 className="text-success" /> : <Circle />}{isDone ? "Concluída" : "Marcar concluída"}
+                  </Button>
+                </div>
+              </AccordionContent>
+            </AccordionItem>
           );
         })}
-      </ol>
+      </Accordion>
       {pct === 100 && (
         <div className="mt-10 rounded-2xl border-2 border-primary bg-card p-8 text-center">
           <Award className="mx-auto h-12 w-12 text-primary" aria-hidden />

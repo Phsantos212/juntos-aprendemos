@@ -9,6 +9,8 @@ export const Route = createFileRoute("/ods4")({
     { name: "description", content: "Agenda 2030, as dez metas da ODS 4 e como a educação reduz desigualdades." },
     { property: "og:title", content: "Conheça a ODS 4" },
     { property: "og:description", content: "As dez metas oficiais da ODS 4 e a importância da educação inclusiva." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ] }),
   component: Ods4,
 });

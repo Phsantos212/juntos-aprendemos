@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Keep lesson content and source metadata in a browser-safe catalog keyed by existing course IDs and module indexes, so adding educational material preserves saved progress and provides traceable references.

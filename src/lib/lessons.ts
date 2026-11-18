@@ -1,0 +1,155 @@
+export type LessonSource = { title: string; publisher: string; url: string; format: "Artigo" | "PDF" | "Página institucional" | "Vídeo e exercícios"; accessed: string };
+export type Lesson = { objective: string; sections: { title: string; text: string; sources: string[] }[]; example: string; practice: string; answer: string };
+
+const source = (title: string, publisher: string, url: string, format: LessonSource["format"] = "Artigo"): LessonSource => ({ title, publisher, url, format, accessed: "18/11/2026" });
+export const lessonSources: Record<string, LessonSource> = {
+  hardware: source("Hardware e software: o que são, diferenças e exemplos", "Toda Matéria — Juliana Diana", "https://www.todamateria.com.br/hardware-e-software/"),
+  internet: source("O que é internet?", "GCFGlobal", "https://edu.gcfglobal.org/pt/como-usar-a-internet/o-que-e-internet/1/"),
+  phishing: source("Phishing e outros golpes", "CERT.br / NIC.br", "https://cartilha.cert.br/guardiao/fasciculo-phishing-golpes-egc.pdf", "PDF"),
+  auth: source("Autenticação — Cartilha de Segurança para Internet", "CERT.br / NIC.br", "https://cartilha.cert.br/fasciculos/autenticacao/fasciculo-autenticacao.pdf", "PDF"),
+  word: source("Seja bem-vindo ao Word 2010", "GCFGlobal", "https://edu.gcfglobal.org/pt/microsoft-word-2010/seja-bemvindo-ao-word-2010/1/"),
+  fractions: source("Fração: significado, tipos e operações", "Brasil Escola", "https://brasilescola.uol.com.br/matematica/fracao.htm"),
+  operations: source("Operações com frações", "Brasil Escola", "https://brasilescola.uol.com.br/matematica/fracao-as-operacoes-matematicas.htm"),
+  percent: source("Porcentagem: o que é e como calcular", "Brasil Escola", "https://brasilescola.uol.com.br/matematica/porcentagem.htm"),
+  budget: source("Caderno de Educação Financeira — Módulo 2: Orçamento pessoal ou familiar", "Banco Central do Brasil", "https://www.bcb.gov.br/content/cidadaniafinanceira/documentos_cidadania/Cuidando_do_seu_dinheiro_Gestao_de_Financas_Pessoais/v4_modulo_2_caderno_educacao_financeira_430206_2026.pdf", "PDF"),
+  genres: source("Tipos textuais: estruturas e relação com os gêneros", "Brasil Escola", "https://brasilescola.uol.com.br/redacao/tipos-textuais.htm"),
+  cohesion: source("Coesão e coerência", "Brasil Escola", "https://brasilescola.uol.com.br/redacao/coesao-e-coerencia.htm"),
+  essay: source("Dissertação e texto dissertativo-argumentativo", "Brasil Escola", "https://brasilescola.uol.com.br/redacao/dissertacao-texto-dissertativo-argumentativo.htm"),
+  sdgs: source("Objetivos de Desenvolvimento Sustentável", "Nações Unidas no Brasil", "https://brasil.un.org/pt-br/sdgs", "Página institucional"),
+  climate: source("ODS 13 — Ação contra a mudança global do clima", "Nações Unidas no Brasil", "https://brasil.un.org/pt-br/sdgs/13", "Página institucional"),
+  nature: source("ODS 15 — Vida terrestre", "Nações Unidas no Brasil", "https://brasil.un.org/pt-br/sdgs/15", "Página institucional"),
+  consumption: source("ODS 12 — Consumo e produção responsáveis", "Nações Unidas no Brasil", "https://brasil.un.org/pt-br/sdgs/12", "Página institucional"),
+  colony: source("Brasil: 500 anos de povoamento", "IBGE", "https://brasil500anos.ibge.gov.br/", "Página institucional"),
+  empire: source("Brasil Império", "Brasil Escola", "https://brasilescola.uol.com.br/historiab/brasil-monarquia.htm"),
+  republic: source("Construção do território — Extensão territorial atual", "IBGE", "https://brasil500anos.ibge.gov.br/territorio-brasileiro-e-povoamento/construcao-do-territorio/extensao-territorial-atual", "Página institucional"),
+  constitution: source("Constituição da República Federativa do Brasil de 1988 — texto atualizado", "Presidência da República / Planalto", "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm", "Página institucional"),
+  greetings: source("Meeting new people", "British Council — LearnEnglish", "https://learnenglish.britishcouncil.org/free-resources/speaking/a1/meeting-new-people", "Vídeo e exercícios"),
+  routine: source("Daily routine vocabulary — A1", "British Council — LearnEnglish", "https://learnenglish.britishcouncil.org/free-resources/vocabulary/a1-a2/daily-routine-vocabulary-a1-beginner-english-vocabulary-lesson"),
+  present: source("Present simple — A1/A2", "British Council — LearnEnglish", "https://learnenglish.britishcouncil.org/free-resources/grammar/a1-a2/present-simple"),
+};
+
+function lesson(objective: string, sections: Lesson["sections"], example: string, practice: string, answer: string): Lesson {
+  return { objective, sections, example, practice, answer };
+}
+function section(title: string, text: string, ...sources: string[]): Lesson["sections"][number] {
+  return { title, text, sources };
+}
+
+// Module indexes match the existing course order, preserving saved completion.
+// Summaries, examples and practice prompts are original; external works remain at their source.
+export const courseLessons: Record<string, Lesson[]> = {
+  "alfabetizacao-digital": [
+    lesson("Distinguir as partes físicas do computador dos programas que ele executa.", [
+      section("Hardware e software", "Hardware é a parte física: teclado, monitor, processador e dispositivos de armazenamento. Software são os programas, como o sistema operacional e o editor de texto. Os dois trabalham juntos: o programa dá instruções e os componentes realizam as tarefas.", "hardware"),
+      section("Entrada, processamento e saída", "O teclado e o mouse enviam dados ao computador. O processador executa instruções; o monitor mostra o resultado. A memória RAM mantém dados em uso, enquanto o armazenamento permite guardar arquivos para depois. Salvar um arquivo é diferente de apenas deixá-lo aberto.", "hardware"),
+    ], "Ao escrever uma carta, o teclado recebe as letras, o editor organiza o texto, o monitor o exibe e o armazenamento guarda o documento salvo.", "Classifique teclado, monitor e editor de texto como hardware ou software e explique a função de cada um.", "Teclado: hardware de entrada. Monitor: hardware de saída. Editor: software usado para criar e modificar documentos."),
+    lesson("Reconhecer riscos ao navegar e proteger o acesso às contas.", [
+      section("Como a internet conecta pessoas", "A internet interliga redes de computadores para permitir a troca de dados. Ao abrir uma página, seu navegador solicita informações a outro computador. Estar conectado permite pesquisar e estudar, mas não torna todo conteúdo recebido verdadeiro.", "internet", "phishing"),
+      section("Golpes e proteção", "Phishing tenta induzir alguém a revelar dados ou realizar ações prejudiciais. Desconfie de urgência, prêmios e cobranças inesperadas; confira a informação no canal oficial, sem usar o link da mensagem. Use uma senha diferente para cada conta e ative a verificação em duas etapas. Nunca compartilhe códigos de acesso.", "phishing", "auth"),
+    ], "Uma mensagem diz que sua conta será bloqueada em dez minutos. Em vez de clicar, abra o aplicativo oficial por conta própria e confira se existe algum aviso.", "Uma mensagem oferece um prêmio e pede senha e código de verificação. Quais sinais de alerta existem e qual ação é segura?", "Prêmio inesperado, pedido de credenciais e pressão para agir são sinais de golpe. Não envie dados; verifique pelo canal oficial e denuncie a mensagem."),
+    lesson("Criar, revisar e salvar um documento simples.", [
+      section("Do rascunho ao documento", "Um processador de texto permite escrever e corrigir sem refazer o documento inteiro. Também oferece formatação, revisão ortográfica e inserção de imagens. Comece pelo conteúdo, organize-o em parágrafos e só então ajuste a apresentação.", "word"),
+      section("Revisar e guardar", "Revise nomes, datas e clareza das frases, mesmo quando houver corretor automático. Escolha um nome de arquivo que identifique o assunto. Os conceitos da referência sobre Word 2010 continuam úteis, embora os menus possam mudar em versões atuais e em outros editores.", "word"),
+    ], "Um comunicado pode conter título, data, dois parágrafos e assinatura. Salve-o como comunicado-reuniao antes de fechar o editor.", "Escreva um convite para uma reunião escolar com data, horário e local. Revise e salve o arquivo.", "Confira se o convite informa motivo, data, horário, local e responsável; corrija a escrita e verifique se o arquivo salvo abre novamente."),
+    lesson("Avaliar informações e tomar decisões responsáveis no ambiente digital.", [
+      section("Senso crítico antes de compartilhar", "Um conteúdo pode ser falso mesmo quando chega por uma pessoa conhecida. Procure a publicação original, verifique se o contexto faz sentido e compare com fontes confiáveis. Mensagens emocionais e pedidos de sigilo podem ser usados para manipular decisões.", "phishing"),
+      section("Cuidado com a identidade digital", "Proteger suas contas também protege pessoas que poderiam receber mensagens de um invasor se passando por você. Mantenha senhas únicas, guarde códigos de recuperação em local seguro e recuse solicitações de acesso que você não iniciou.", "auth"),
+    ], "Antes de encaminhar um aviso sobre matrícula, confirme no site ou contato oficial da escola se as datas e condições são reais.", "Você recebeu uma notícia sem autor nem fonte original. Descreva duas verificações antes de compartilhar.", "Busque o comunicado original e confirme a informação em um canal confiável e independente. Se não conseguir confirmar, não apresente o conteúdo como fato."),
+  ],
+  "matematica-basica": [
+    lesson("Relacionar operações a situações de compra, divisão e contagem.", [
+      section("Escolher a operação", "Somar reúne quantidades; subtrair calcula diferenças; multiplicar reúne grupos iguais; dividir reparte ou identifica quantos grupos cabem em um total. Uma divisão também pode ser representada por uma fração, desde que o divisor não seja zero.", "fractions"),
+      section("Operar partes de um todo", "Para somar frações com denominadores diferentes, escreva frações equivalentes com o mesmo denominador e some os numeradores. Na multiplicação, multiplique numeradores entre si e denominadores entre si. Na divisão, multiplique a primeira fração pelo inverso da segunda, que deve ser diferente de zero.", "operations"),
+    ], "Três cadernos de R$ 12 custam 3 × 12 = R$ 36. Dividir R$ 36 igualmente entre três pessoas resulta em R$ 12 por pessoa.", "Quatro pessoas dividem igualmente uma conta de R$ 80. Quanto cada uma paga?", "80 ÷ 4 = 20. Cada pessoa paga R$ 20."),
+    lesson("Converter frações, decimais e porcentagens para calcular descontos.", [
+      section("Partes iguais", "Em 3/4, o denominador 4 indica em quantas partes iguais o todo foi dividido e o numerador 3 indica quantas foram consideradas. Frações equivalentes representam a mesma quantidade: 1/2 e 2/4 correspondem à metade.", "fractions"),
+      section("Porcentagem no cotidiano", "Porcentagem significa uma razão com denominador 100. Assim, 25% = 25/100 = 0,25 = 1/4. Para calcular uma porcentagem de um valor, multiplique o valor pela forma decimal da taxa. Num desconto, subtraia o desconto do preço inicial.", "percent"),
+    ], "Um produto de R$ 80 com desconto de 25% tem desconto de 80 × 0,25 = R$ 20. O preço final é R$ 60.", "Calcule 10% de R$ 150 e o preço final depois desse desconto.", "150 × 0,10 = R$ 15 de desconto. Preço final: 150 − 15 = R$ 135."),
+    lesson("Organizar receitas e despesas para planejar o orçamento.", [
+      section("Registrar antes de decidir", "O orçamento permite acompanhar o dinheiro que entra e o que sai. Registre receitas e despesas, reúna os valores por categoria e compare o resultado. Separe gastos recorrentes dos ocasionais para evitar esquecer pagamentos menos frequentes.", "budget"),
+      section("Planejar com os recursos disponíveis", "Quando as despesas superam as receitas, é necessário rever prioridades e buscar ajustes possíveis. Quando sobra dinheiro, é possível planejar objetivos e reservas. Um orçamento deve ser acompanhado e atualizado; uma estimativa inicial não substitui os valores realmente gastos.", "budget"),
+    ], "Receita de R$ 1.600 e despesas de R$ 1.450 deixam saldo de R$ 150. Esse saldo pode ser destinado a uma reserva, conforme a situação da família.", "Com receita de R$ 2.000 e despesas de R$ 900, R$ 600 e R$ 350, qual é o saldo?", "Despesas totais: 900 + 600 + 350 = R$ 1.850. Saldo: 2.000 − 1.850 = R$ 150."),
+    lesson("Resolver problemas com dados, unidades e conferência do resultado.", [
+      section("Identificar o que se procura", "Leia o enunciado, destaque o total e a parte considerada e decida qual relação usar. Em problemas percentuais, identifique a base: 20% de R$ 50 não é o mesmo valor que 20% de R$ 200. Registre a unidade junto ao resultado.", "percent"),
+      section("Conferir por outro caminho", "Uma porcentagem pode ser calculada como decimal ou como fração. Usar as duas formas ajuda a conferir: 50% de um total deve ser sua metade. Para comparar gastos, organize os dados de maneira consistente antes de concluir qual opção cabe no orçamento.", "percent", "budget"),
+    ], "De 40 estudantes, 30 usam a biblioteca. A razão é 30/40 = 0,75, ou 75%. Como 30 é mais da metade de 40, o resultado deve ser maior que 50%.", "Em uma turma de 25 pessoas, 5 vão à escola de bicicleta. Qual é a porcentagem?", "5 ÷ 25 = 0,20. Multiplicando por 100, temos 20%."),
+  ],
+  redacao: [
+    lesson("Distinguir a finalidade de um gênero textual de sua estrutura.", [
+      section("Gênero e tipo textual", "Gêneros são formas de comunicação vinculadas a situações de uso, como notícia, receita e carta. Tipos textuais são estruturas, como narração, descrição, exposição, argumentação e injunção. Um mesmo gênero pode combinar mais de uma estrutura.", "genres"),
+      section("Ler com atenção à finalidade", "Pergunte quem escreve, para quem e com qual objetivo. Um texto narrativo apresenta acontecimentos; um injuntivo orienta ações; um argumentativo defende uma posição. Identificar a finalidade ajuda a interpretar tanto o conteúdo quanto a forma de apresentá-lo.", "genres", "essay"),
+    ], "Uma receita costuma orientar ações em sequência; um artigo de opinião apresenta um posicionamento e razões para defendê-lo.", "Compare uma receita e um artigo de opinião. Qual é a finalidade principal de cada um?", "A receita orienta como preparar algo; o artigo de opinião procura defender um ponto de vista com argumentos."),
+    lesson("Ligar frases e manter um sentido consistente ao longo do texto.", [
+      section("Coesão: as conexões", "A coesão liga elementos do texto por pronomes, retomadas e conectivos. Uma expressão como 'por isso' sinaliza consequência; 'porém' indica contraste. Escolha a conexão de acordo com a relação real entre as ideias, e não apenas para variar palavras.", "cohesion"),
+      section("Coerência: o sentido global", "A coerência depende de um conjunto de ideias que faça sentido no contexto. Evite contradições, repetições sem avanço e informações que não contribuem para o tema. Um texto pode ter muitos conectivos e ainda assim apresentar raciocínio incoerente.", "cohesion"),
+    ], "'A biblioteca ampliou o horário. Por isso, mais estudantes conseguiram visitá-la.' O conectivo explicita a consequência apresentada no exemplo.", "Una as frases 'Queria estudar na biblioteca' e 'Ela estava fechada' com um conectivo adequado.", "Uma possibilidade: 'Queria estudar na biblioteca, porém ela estava fechada.' O conectivo marca o contraste."),
+    lesson("Planejar uma tese e sustentá-la com argumentos relevantes.", [
+      section("Informar ou defender", "Um texto dissertativo pode explicar um assunto, enquanto o dissertativo-argumentativo procura convencer o leitor de uma posição. A tese é a ideia defendida; os argumentos apresentam razões que a sustentam. Diferencie opinião, exemplo hipotético e informação verificável.", "essay"),
+      section("Organizar a argumentação", "Na introdução, delimite o tema e apresente a tese. No desenvolvimento, explique as razões e relacione exemplos ao argumento. Na conclusão, retome o raciocínio. A organização deve formar uma unidade, sem contradições entre a posição inicial e a conclusão.", "essay", "cohesion"),
+    ], "Tese: ampliar o acesso à biblioteca favorece o estudo. Argumento possível: horários mais flexíveis permitem que pessoas com rotinas diferentes consultem os materiais.", "Escreva uma tese sobre acesso gratuito à educação e um argumento que a sustente, sem inventar estatísticas.", "Exemplo: 'O acesso gratuito amplia oportunidades de aprendizagem, pois permite estudar mesmo quando a família não pode pagar por materiais.' Outras respostas coerentes são possíveis."),
+    lesson("Revisar conteúdo e reescrever trechos pouco claros.", [
+      section("Revisar a lógica primeiro", "Confira se a tese é compreensível, se cada parágrafo contribui para ela e se a conclusão decorre do desenvolvimento. Depois procure contradições e repetições. Reescrever pode significar retirar uma ideia que não contribui, e não apenas corrigir uma palavra.", "essay", "cohesion"),
+      section("Revisar as conexões", "Verifique se os pronomes têm referentes claros e se os conectivos expressam a relação pretendida. Quando um trecho permite duas interpretações, substitua a retomada por um nome ou reorganize a frase. Mantenha apenas informações relevantes à finalidade do texto.", "cohesion"),
+    ], "'Ana falou com Beatriz sobre seu texto' é ambígua. Para esclarecer: 'Ana falou com Beatriz sobre o texto de Beatriz.'",
+      "Reescreva 'Pedro entregou o livro a Lucas porque ele precisava estudar', deixando claro que Lucas precisava estudar.", "Uma opção: 'Como Lucas precisava estudar, Pedro lhe entregou o livro.' A nova organização explicita quem precisava estudar."),
+  ],
+  sustentabilidade: [
+    lesson("Relacionar a Agenda 2030 às necessidades das pessoas e do planeta.", [
+      section("Objetivos interconectados", "Os 17 Objetivos de Desenvolvimento Sustentável propõem enfrentar desafios como pobreza, desigualdades e degradação ambiental. Não são temas isolados: uma ação educativa pode contribuir para saúde, trabalho, participação social e proteção ambiental.", "sdgs"),
+      section("Da meta à ação local", "Conhecer um objetivo ajuda a identificar situações da comunidade e formular ações concretas. O ODS 12, por exemplo, aborda desperdício de alimentos e geração de resíduos. Um projeto local contribui para essas metas, mas não equivale a resolver sozinho um desafio global.", "sdgs", "consumption"),
+    ], "Organizar o reaproveitamento de materiais escolares pode conectar educação, redução de resíduos e colaboração entre famílias.", "Escolha um problema da escola e associe-o a um ODS, explicando a relação.", "Exemplo: desperdício de alimentos no recreio se relaciona ao ODS 12, que inclui a redução do desperdício de alimentos."),
+    lesson("Diferenciar ações climáticas e proteção da biodiversidade.", [
+      section("Mudança do clima", "O ODS 13 propõe enfrentar a mudança climática e seus impactos. Mitigação busca reduzir causas, como emissões; adaptação busca diminuir a vulnerabilidade aos efeitos. Educação, prevenção e planejamento são partes importantes desse objetivo.", "climate"),
+      section("Vida terrestre", "O ODS 15 inclui conservação de ecossistemas, uso sustentável das florestas e proteção de espécies. Perda de habitat e degradação do solo ameaçam a biodiversidade. Proteger ambientes naturais exige observar as necessidades locais e respeitar orientações técnicas.", "nature"),
+    ], "Reduzir emissões é uma ação de mitigação; planejar proteção contra enchentes é adaptação. Conservar uma área de vegetação pode apoiar a biodiversidade.", "Classifique um plano de alerta para enchentes e uma medida de redução de emissões como adaptação ou mitigação.", "Alerta para enchentes: adaptação. Redução de emissões: mitigação."),
+    lesson("Avaliar o consumo considerando recursos e resíduos.", [
+      section("Antes da compra", "O ODS 12 propõe usar recursos de forma eficiente e reduzir impactos da produção e do consumo. Avalie se precisa de um produto, se algo existente pode ser reparado ou reutilizado e como evitar desperdício. A decisão começa antes do descarte.", "consumption"),
+      section("Depois do uso", "Prevenir resíduos, reduzir o consumo desnecessário, reutilizar e reciclar são ações complementares. No caso dos alimentos, planejar quantidades e aproveitar o que pode ser consumido com segurança ajuda a reduzir desperdício. Confira as regras locais de coleta e destinação.", "consumption"),
+    ], "Antes de comprar novos cadernos, verifique páginas disponíveis nos antigos. Comprar menos quando não há necessidade evita usar recursos e gerar resíduos.", "Liste três ações para reduzir o desperdício de materiais ou alimentos na escola.", "Possibilidades: planejar as quantidades, reaproveitar materiais em bom estado e acompanhar o que sobra para ajustar compras futuras."),
+    lesson("Planejar uma ação comunitária com objetivo e indicador de acompanhamento.", [
+      section("Definir um problema concreto", "Escolha uma situação observável, como resíduos misturados ou desperdício de alimentos. Relacione-a a um ODS e converse com as pessoas envolvidas. Um projeto deve propor uma ação possível, com responsáveis e prazo, em vez de apenas uma intenção geral.", "sdgs", "consumption"),
+      section("Acompanhar para melhorar", "Registre a situação inicial e acompanhe o mesmo indicador após a ação. A redução de resíduos pode ser observada com medidas comparáveis ao longo do tempo. Anote limites da observação, como mudanças no número de participantes, para não atribuir todo resultado ao projeto.", "consumption"),
+    ], "Projeto proposto: durante duas semanas, registrar o desperdício de alimentos no recreio e discutir ajustes com a equipe da escola. Indicador: quantidade desperdiçada por dia.", "Elabore um plano com problema, ODS, ação, responsável, prazo e indicador.", "Exemplo: papel desperdiçado; ODS 12; reutilizar folhas de rascunho; turma e professor; quatro semanas; quantidade de folhas reaproveitadas por semana. É uma proposta, não um resultado já medido."),
+  ],
+  "historia-brasil": [
+    lesson("Compreender a colonização considerando diferentes povos e relações de poder.", [
+      section("Um território já habitado", "A chegada portuguesa em 1500 não marca o início da história das populações que viviam no território. A colonização deve ser estudada considerando os povos indígenas, a ocupação portuguesa e a presença de africanos trazidos sob escravização, além de suas contribuições e resistências.", "colony"),
+      section("Ocupação e administração", "A exploração econômica e a organização administrativa acompanharam a ocupação colonial. O cultivo da cana e a instalação de engenhos, a criação de vilas e a sede do governo-geral são marcos para compreender como o domínio português se estruturou.", "colony"),
+    ], "Uma linha do tempo sobre 1500 deve registrar a chegada da frota portuguesa sem tratar o território como vazio ou sem história anterior.", "Por que a expressão 'território sem habitantes antes de 1500' é inadequada?", "Porque diferentes povos indígenas já habitavam o território e tinham histórias, culturas e formas próprias de organização."),
+    lesson("Identificar as fases do Império e as permanências após a independência.", [
+      section("Monarquia e independência", "O período imperial vai de 1822 a 1889. Divide-se em Primeiro Reinado, Período Regencial e Segundo Reinado. A independência alterou a relação política com Portugal, mas não eliminou imediatamente estruturas de desigualdade e escravização.", "empire"),
+      section("Mudanças e conflitos", "O período incluiu disputas políticas, revoltas provinciais, expansão da economia cafeeira e a luta contra a escravidão. A abolição em 1888 e a proclamação da República em 1889 são acontecimentos diferentes: o primeiro encerrou legalmente a escravidão; o segundo encerrou a monarquia.", "empire"),
+    ], "Comparar 1822, 1888 e 1889 ajuda a distinguir independência, abolição e mudança da forma de governo.", "Associe 1822, 1888 e 1889 aos acontecimentos correspondentes.", "1822: independência. 1888: abolição legal da escravidão. 1889: proclamação da República."),
+    lesson("Relacionar a formação da República à organização dos estados e à cidadania.", [
+      section("Da monarquia à República", "A proclamação da República, em 1889, encerrou o Império. As antigas províncias passaram a ser estados. A organização territorial continuou a mudar: o Acre foi incorporado em 1903 pelo Tratado de Petrópolis.", "republic", "empire"),
+      section("República e democracia", "República e democracia não são sinônimos automáticos. A forma republicana precisa ser analisada junto às condições de participação e garantia de direitos. Na ordem constitucional atual, o Brasil é um Estado Democrático de Direito, com cidadania, dignidade humana e pluralismo político entre seus fundamentos.", "constitution"),
+    ], "Uma mudança de nome de província para estado descreve uma transformação administrativa; avaliar quem podia participar das decisões exige outras perguntas históricas.", "O que ocorreu com as províncias em 1889 e por que isso não basta para avaliar a participação democrática?", "Elas se tornaram estados. A organização territorial não informa, por si só, como direitos e participação política eram garantidos."),
+    lesson("Localizar direitos e compreender a educação na Constituição.", [
+      section("Direitos e organização do Estado", "A Constituição de 1988 foi promulgada em 5 de outubro de 1988. O artigo 5º trata de direitos e garantias fundamentais; o artigo 6º inclui direitos sociais, entre eles a educação. O texto oficial consultado incorpora emendas, portanto não é apenas a versão original de 1988.", "constitution"),
+      section("Educação como direito", "O artigo 205 estabelece a educação como direito de todos e dever do Estado e da família, com colaboração da sociedade. O artigo 206 inclui princípios como igualdade de condições de acesso e permanência na escola. Conhecer esses dispositivos ajuda a discutir cidadania com base em uma fonte primária.", "constitution"),
+    ], "Para fundamentar um debate sobre acesso à escola, consulte os artigos 205 e 206, em vez de depender apenas de uma opinião ou de um resumo.", "Localize os artigos 205 e 206 na fonte oficial. Quem tem direito à educação e qual princípio trata do acesso e da permanência?", "A educação é direito de todos. O artigo 206, inciso I, prevê igualdade de condições para o acesso e a permanência na escola."),
+  ],
+  ingles: [
+    lesson("Cumprimentar e se apresentar em uma conversa simples.", [
+      section("Primeiro contato", "Use 'Hello' ou 'Hi' para cumprimentar. Para apresentar seu nome, diga 'I'm' seguido do nome ou 'My name is'. 'Nice to meet you' expressa prazer em conhecer alguém. No material do British Council, o vídeo mostra essas expressões em contexto e oferece exercícios e transcrição.", "greetings"),
+      section("Apresentar outra pessoa", "'This is' seguido do nome apresenta alguém: 'This is Marina.' Para responder a uma apresentação, é possível usar 'Nice to meet you' e 'You too'. Observe quem está falando e pratique as expressões como parte de uma conversa, não só como palavras isoladas.", "greetings"),
+    ], "A: Hi, I'm Rafael. B: Hello, I'm Marina. Nice to meet you. A: Nice to meet you too.", "Escreva uma apresentação com cumprimento, seu nome e uma frase para dizer que gostou de conhecer a pessoa.", "Exemplo: 'Hello, I'm Henrique. Nice to meet you.' Você pode substituir o nome e usar 'Hi' no cumprimento."),
+    lesson("Descrever atividades diárias com vocabulário e expressões de tempo.", [
+      section("Vocabulário de rotina", "Expressões úteis incluem 'wake up' (acordar), 'get dressed' (vestir-se), 'have breakfast' (tomar café da manhã), 'go to school' (ir à escola) e 'go to bed' (ir dormir). Aprenda cada expressão com a ação completa, evitando traduzir palavra por palavra.", "routine"),
+      section("Quando as ações acontecem", "Use 'in the morning', 'in the afternoon' e 'in the evening' para períodos do dia e 'at night' para a noite. Para horários, use 'at', como em 'at 7 o'clock'. Para ordenar a rotina, use 'first', 'then' e 'finally'. Rotinas costumam ser expressas no present simple.", "routine", "present"),
+    ], "I wake up at 6 o'clock. Then I have breakfast. I go to school in the morning.", "Escreva três frases em inglês sobre sua rotina, incluindo um horário ou período do dia.", "Exemplo: 'I wake up at 7 o'clock. I go to school in the morning. I go to bed at 10 o'clock.' Adapte as ações à sua rotina."),
+    lesson("Formar afirmações, negativas e perguntas no present simple.", [
+      section("Hábitos e fatos gerais", "O present simple expressa hábitos e fatos geralmente verdadeiros. Com I, you, we e they, use a forma básica do verbo. Com he, she e it, normalmente acrescente -s ou -es; alguns verbos mudam de forma, como 'have' para 'has' e 'go' para 'goes'.", "present"),
+      section("Negativas e perguntas", "Use 'don't' ou 'doesn't' nas negativas e 'do' ou 'does' nas perguntas. Depois de 'does' ou 'doesn't', o verbo principal fica na forma básica: 'Does she study?' e 'She doesn't study'. Essas regras se referem a verbos como study e work; o verbo be tem formas próprias.", "present"),
+    ], "I study English. She studies English. She doesn't study French. Does she study English?",
+      "Complete com a forma de study: 'He ___ English.' Depois transforme a frase em negativa.", "He studies English. Negativa: He doesn't study English."),
+    lesson("Combinar apresentação e perguntas sobre hábitos em um diálogo.", [
+      section("Construir uma troca", "Uma conversa simples pode começar com um cumprimento e uma apresentação, seguida de uma pergunta e resposta. Escutar a resposta é tão importante quanto formular a próxima frase. O vídeo de encontros do British Council permite ouvir expressões e acompanhar a transcrição.", "greetings"),
+      section("Perguntar sobre a rotina", "Use 'Do you…?' para perguntar sobre hábitos, como 'Do you study in the morning?' Responda com 'Yes, I do' ou 'No, I don't' e acrescente uma informação se desejar. Para uma terceira pessoa, use 'Does…?' e respostas com 'does' ou 'doesn't'.", "present", "routine"),
+    ], "A: Hi, I'm Clara. B: Hello, I'm Paulo. A: Do you study in the morning? B: Yes, I do. I study at 8 o'clock.", "Crie um diálogo de quatro falas com apresentação, pergunta sobre rotina e resposta.", "Exemplo: A: Hi, I'm Leo. B: Hello, I'm Bia. A: Do you go to school in the morning? B: Yes, I do. Outras respostas gramaticalmente adequadas são possíveis."),
+  ],
+};
+
+export function sourceIdsForLesson(lesson: Lesson): string[] {
+  return [...new Set(lesson.sections.flatMap((item) => item.sources))];
+}

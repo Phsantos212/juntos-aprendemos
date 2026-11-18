@@ -11,6 +11,8 @@ export const Route = createFileRoute("/")({
     { name: "description", content: "Cursos, biblioteca digital e atividades gratuitas alinhadas à ODS 4 da ONU." },
     { property: "og:title", content: "Aprender Juntos — Educação de qualidade" },
     { property: "og:description", content: "Cursos, biblioteca digital e atividades alinhadas à ODS 4." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ] }),
   component: Index,
 });

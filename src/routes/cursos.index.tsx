@@ -12,6 +12,8 @@ export const Route = createFileRoute("/cursos/")({
     { name: "description", content: "Cursos por disciplina com aulas, materiais e certificado de conclusão." },
     { property: "og:title", content: "Cursos gratuitos" },
     { property: "og:description", content: "Cursos por disciplina com certificado de conclusão." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ] }),
   component: Cursos,
 });

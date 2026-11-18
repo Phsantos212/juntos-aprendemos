@@ -14,6 +14,8 @@ export const Route = createFileRoute("/biblioteca")({
     { name: "description", content: "Livros, apostilas, artigos e videoaulas gratuitos com busca e filtros." },
     { property: "og:title", content: "Biblioteca digital gratuita" },
     { property: "og:description", content: "Livros, apostilas, artigos e videoaulas gratuitos." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ] }),
   component: Biblioteca,
 });

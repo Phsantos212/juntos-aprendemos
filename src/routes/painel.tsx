@@ -11,6 +11,8 @@ export const Route = createFileRoute("/painel")({
     { name: "description", content: "Acompanhe seu progresso, pontos, conquistas e metas de aprendizagem." },
     { property: "og:title", content: "Meu painel de aprendizagem" },
     { property: "og:description", content: "Progresso, conquistas e metas de aprendizagem." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
   ] }),
   component: Painel,
 });
