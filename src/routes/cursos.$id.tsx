@@ -43,7 +43,7 @@ function Curso() {
       <h2 className="mt-10 text-2xl font-semibold">Conteúdo programático</h2>
       <ol className="mt-4 space-y-3">
         {c.modules.map((m, i) => {
-          const isDone = done.includes(i); const Icon = formats[i % 4];
+          const isDone = done.includes(i); const Icon = formats[i % 4]!;
           return (
             <li key={m} className="flex items-center gap-4 rounded-xl border bg-card p-4">
               <Icon className="h-6 w-6 shrink-0 text-primary" aria-hidden />

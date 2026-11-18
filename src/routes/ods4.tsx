@@ -40,7 +40,7 @@ function Ods4() {
         <section>
           <h2 className="text-3xl font-semibold">Entenda o tema</h2>
           <Accordion type="single" collapsible className="mt-4">
-            {topics.map(([t, d]) => (
+            {topics.map(([t = "", d]) => (
               <AccordionItem key={t} value={t}><AccordionTrigger className="text-lg">{t}</AccordionTrigger><AccordionContent className="text-base text-muted-foreground">{d}</AccordionContent></AccordionItem>
             ))}
           </Accordion>
