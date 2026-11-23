@@ -14,13 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      lesson_progress: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          id: string
+          last_position: number
+          lesson_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          id?: string
+          last_position?: number
+          lesson_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          id?: string
+          last_position?: number
+          lesson_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_path: string | null
+          browser_migrated_at: string | null
+          full_name: string
+          id: string
+          learning_data: Json
+          terms_accepted_at: string | null
+          terms_version: string | null
+          updated_at: string
+        }
+        Insert: {
+          avatar_path?: string | null
+          browser_migrated_at?: string | null
+          full_name?: string
+          id: string
+          learning_data?: Json
+          terms_accepted_at?: string | null
+          terms_version?: string | null
+          updated_at?: string
+        }
+        Update: {
+          avatar_path?: string | null
+          browser_migrated_at?: string | null
+          full_name?: string
+          id?: string
+          learning_data?: Json
+          terms_accepted_at?: string | null
+          terms_version?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      import_browser_progress: { Args: { payload: Json }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never
