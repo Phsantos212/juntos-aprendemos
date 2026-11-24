@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/SiteShell";
 import { courses } from "@/lib/data";
 import { levelFor, streak, useProgress } from "@/lib/progress";
 import { Progress } from "@/components/ui/progress";
+import { StudentStatus } from "@/components/StudentStatus";
 
 export const Route = createFileRoute("/painel")({
   head: () => ({ meta: [
@@ -35,6 +36,7 @@ function Painel() {
     <>
       <PageHeader title="Meu painel" subtitle="Sua evolução é o que importa — cada passo conta." />
       <div className="mx-auto max-w-6xl space-y-10 px-4 py-10">
+        <StudentStatus />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[["Pontos", p.points], ["Nível", level], ["Dias seguidos", days], ["Aulas concluídas", lessons]].map(([l, v]) => (
             <div key={l} className="rounded-xl border bg-card p-5"><p className="text-sm text-muted-foreground">{l}</p><p className="font-display text-4xl text-primary">{v}</p></div>

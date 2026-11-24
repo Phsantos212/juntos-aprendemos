@@ -5,6 +5,7 @@ import { courses } from "@/lib/data";
 import { useProgress } from "@/lib/progress";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
+import { StudentStatus } from "@/components/StudentStatus";
 
 export const Route = createFileRoute("/cursos/")({
   head: () => ({ meta: [
@@ -27,6 +28,7 @@ function Cursos() {
     <>
       <PageHeader title="Cursos" subtitle="Escolha uma disciplina e aprenda no seu ritmo." />
       <div className="mx-auto max-w-6xl px-4 py-10">
+        <StudentStatus />
         <div className="flex flex-wrap gap-2" role="group" aria-label="Filtrar por disciplina">
           {subjects.map((x) => <Button key={x} size="sm" variant={s === x ? "default" : "outline"} aria-pressed={s === x} onClick={() => setS(x)}>{x}</Button>)}
         </div>

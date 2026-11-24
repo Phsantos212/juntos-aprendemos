@@ -10,17 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AtividadesRouteImport } from './routes/atividades'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BibliotecaRouteImport } from './routes/biblioteca'
-import { Route as CursosRouteImport } from './routes/cursos'
+import { Route as CadastroRouteImport } from './routes/cadastro'
+import { Route as EsqueciSenhaRouteImport } from './routes/esqueci-senha'
 import { Route as Ods4RouteImport } from './routes/ods4'
 import { Route as PainelRouteImport } from './routes/painel'
+import { Route as PrivacidadeRouteImport } from './routes/privacidade'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as TermosRouteImport } from './routes/termos'
+import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
 import { Route as CursosIndexRouteImport } from './routes/cursos.index'
-import { Route as CursosIdRouteImport } from './routes/cursos.$id'
+import { Route as AuthenticatedCursosIdRouteImport } from './routes/_authenticated/cursos.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AtividadesRoute = AtividadesRouteImport.update({
@@ -28,14 +39,24 @@ const AtividadesRoute = AtividadesRouteImport.update({
   path: '/atividades',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BibliotecaRoute = BibliotecaRouteImport.update({
   id: '/biblioteca',
   path: '/biblioteca',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CursosRoute = CursosRouteImport.update({
-  id: '/cursos',
-  path: '/cursos',
+const CadastroRoute = CadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsqueciSenhaRoute = EsqueciSenhaRouteImport.update({
+  id: '/esqueci-senha',
+  path: '/esqueci-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Ods4Route = Ods4RouteImport.update({
@@ -48,86 +69,153 @@ const PainelRoute = PainelRouteImport.update({
   path: '/painel',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CursosIndexRoute = CursosIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => CursosRoute,
+const PrivacidadeRoute = PrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const CursosIdRoute = CursosIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => CursosRoute,
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermosRoute = TermosRouteImport.update({
+  id: '/termos',
+  path: '/termos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const CursosIndexRoute = CursosIndexRouteImport.update({
+  id: '/cursos/',
+  path: '/cursos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCursosIdRoute = AuthenticatedCursosIdRouteImport.update({
+  id: '/cursos/$id',
+  path: '/cursos/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/atividades': typeof AtividadesRoute
+  '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRoute
-  '/cursos': typeof CursosRouteWithChildren
+  '/cadastro': typeof CadastroRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/ods4': typeof Ods4Route
   '/painel': typeof PainelRoute
-  '/cursos/$id': typeof CursosIdRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/termos': typeof TermosRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
   '/cursos/': typeof CursosIndexRoute
+  '/cursos/$id': typeof AuthenticatedCursosIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/atividades': typeof AtividadesRoute
+  '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRoute
+  '/cadastro': typeof CadastroRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/ods4': typeof Ods4Route
   '/painel': typeof PainelRoute
-  '/cursos/$id': typeof CursosIdRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/termos': typeof TermosRoute
+  '/perfil': typeof AuthenticatedPerfilRoute
   '/cursos': typeof CursosIndexRoute
+  '/cursos/$id': typeof AuthenticatedCursosIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/atividades': typeof AtividadesRoute
+  '/auth': typeof AuthRoute
   '/biblioteca': typeof BibliotecaRoute
-  '/cursos': typeof CursosRouteWithChildren
+  '/cadastro': typeof CadastroRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/ods4': typeof Ods4Route
   '/painel': typeof PainelRoute
-  '/cursos/$id': typeof CursosIdRoute
+  '/privacidade': typeof PrivacidadeRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/termos': typeof TermosRoute
+  '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
   '/cursos/': typeof CursosIndexRoute
+  '/_authenticated/cursos/$id': typeof AuthenticatedCursosIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/atividades'
+    | '/auth'
     | '/biblioteca'
-    | '/cursos'
+    | '/cadastro'
+    | '/esqueci-senha'
     | '/ods4'
     | '/painel'
-    | '/cursos/$id'
+    | '/privacidade'
+    | '/reset-password'
+    | '/termos'
+    | '/perfil'
     | '/cursos/'
+    | '/cursos/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/atividades'
+    | '/auth'
     | '/biblioteca'
+    | '/cadastro'
+    | '/esqueci-senha'
     | '/ods4'
     | '/painel'
-    | '/cursos/$id'
+    | '/privacidade'
+    | '/reset-password'
+    | '/termos'
+    | '/perfil'
     | '/cursos'
+    | '/cursos/$id'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/atividades'
+    | '/auth'
     | '/biblioteca'
-    | '/cursos'
+    | '/cadastro'
+    | '/esqueci-senha'
     | '/ods4'
     | '/painel'
-    | '/cursos/$id'
+    | '/privacidade'
+    | '/reset-password'
+    | '/termos'
+    | '/_authenticated/perfil'
     | '/cursos/'
+    | '/_authenticated/cursos/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AtividadesRoute: typeof AtividadesRoute
+  AuthRoute: typeof AuthRoute
   BibliotecaRoute: typeof BibliotecaRoute
-  CursosRoute: typeof CursosRouteWithChildren
+  CadastroRoute: typeof CadastroRoute
+  EsqueciSenhaRoute: typeof EsqueciSenhaRoute
   Ods4Route: typeof Ods4Route
   PainelRoute: typeof PainelRoute
+  PrivacidadeRoute: typeof PrivacidadeRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  TermosRoute: typeof TermosRoute
+  CursosIndexRoute: typeof CursosIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -139,11 +227,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/atividades': {
       id: '/atividades'
       path: '/atividades'
       fullPath: '/atividades'
       preLoaderRoute: typeof AtividadesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/biblioteca': {
@@ -153,11 +255,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BibliotecaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cursos': {
-      id: '/cursos'
-      path: '/cursos'
-      fullPath: '/cursos'
-      preLoaderRoute: typeof CursosRouteImport
+    '/cadastro': {
+      id: '/cadastro'
+      path: '/cadastro'
+      fullPath: '/cadastro'
+      preLoaderRoute: typeof CadastroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/esqueci-senha': {
+      id: '/esqueci-senha'
+      path: '/esqueci-senha'
+      fullPath: '/esqueci-senha'
+      preLoaderRoute: typeof EsqueciSenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ods4': {
@@ -174,43 +283,78 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PainelRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacidade': {
+      id: '/privacidade'
+      path: '/privacidade'
+      fullPath: '/privacidade'
+      preLoaderRoute: typeof PrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/termos': {
+      id: '/termos'
+      path: '/termos'
+      fullPath: '/termos'
+      preLoaderRoute: typeof TermosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/perfil': {
+      id: '/_authenticated/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof AuthenticatedPerfilRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/cursos/': {
       id: '/cursos/'
-      path: '/'
+      path: '/cursos'
       fullPath: '/cursos/'
       preLoaderRoute: typeof CursosIndexRouteImport
-      parentRoute: typeof CursosRoute
+      parentRoute: typeof rootRouteImport
     }
-    '/cursos/$id': {
-      id: '/cursos/$id'
-      path: '/$id'
+    '/_authenticated/cursos/$id': {
+      id: '/_authenticated/cursos/$id'
+      path: '/cursos/$id'
       fullPath: '/cursos/$id'
-      preLoaderRoute: typeof CursosIdRouteImport
-      parentRoute: typeof CursosRoute
+      preLoaderRoute: typeof AuthenticatedCursosIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-interface CursosRouteChildren {
-  CursosIdRoute: typeof CursosIdRoute
-  CursosIndexRoute: typeof CursosIndexRoute
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
+  AuthenticatedCursosIdRoute: typeof AuthenticatedCursosIdRoute
 }
 
-const CursosRouteChildren: CursosRouteChildren = {
-  CursosIdRoute: CursosIdRoute,
-  CursosIndexRoute: CursosIndexRoute,
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
+  AuthenticatedCursosIdRoute: AuthenticatedCursosIdRoute,
 }
 
-const CursosRouteWithChildren =
-  CursosRoute._addFileChildren(CursosRouteChildren)
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AtividadesRoute: AtividadesRoute,
+  AuthRoute: AuthRoute,
   BibliotecaRoute: BibliotecaRoute,
-  CursosRoute: CursosRouteWithChildren,
+  CadastroRoute: CadastroRoute,
+  EsqueciSenhaRoute: EsqueciSenhaRoute,
   Ods4Route: Ods4Route,
   PainelRoute: PainelRoute,
+  PrivacidadeRoute: PrivacidadeRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  TermosRoute: TermosRoute,
+  CursosIndexRoute: CursosIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

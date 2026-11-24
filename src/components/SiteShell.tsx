@@ -1,7 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { BookOpen, Moon, Sun, Menu, X, Type, Glasses, Minimize2 } from "lucide-react";
+import { BookOpen, Moon, Sun, Menu, X, Type, Glasses, Minimize2, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useStudentAuth } from "@/lib/auth-context";
+import { useProgress } from "@/lib/progress";
 
 const nav = [
   { to: "/", label: "Início" },
@@ -48,6 +50,9 @@ function A11yBar() {
 
 export function SiteShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const { user, loading, signOut } = useStudentAuth();
+  const { profile } = useProgress();
+  const firstName = profile?.full_name.trim().split(/\s+/)[0] || "Meu perfil";
   return (
     <div className="flex min-h-screen flex-col">
       <a href="#conteudo" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-primary focus:p-2 focus:text-primary-foreground">Pular para o conteúdo</a>
@@ -63,11 +68,43 @@ export function SiteShell({ children }: { children: ReactNode }) {
               <Link key={n.to} to={n.to} activeOptions={{ exact: n.to === "/" }} className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground" activeProps={{ className: "text-primary bg-accent" }}>{n.label}</Link>
             ))}
           </nav>
+          <div className="hidden items-center gap-2 lg:flex">
+            {user ? (
+              <>
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/perfil"><User className="h-4 w-4" aria-hidden />{firstName}</Link>
+                </Button>
+                <Button variant="outline" size="sm" onClick={() => void signOut()}>
+                  <LogOut className="h-4 w-4" aria-hidden />Sair
+                </Button>
+              </>
+            ) : !loading ? (
+              <Button asChild size="sm">
+                <Link to="/auth">Entrar</Link>
+              </Button>
+            ) : null}
+          </div>
           <Button variant="ghost" size="icon" className="ml-auto lg:hidden" onClick={() => setOpen(!open)} aria-label="Menu" aria-expanded={open}>{open ? <X /> : <Menu />}</Button>
         </div>
         {open && (
           <nav aria-label="Menu móvel" className="flex flex-col border-t px-4 py-2 lg:hidden">
             {nav.map((n) => <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="py-2">{n.label}</Link>)}
+            <div className="mt-2 flex flex-wrap gap-2 border-t pt-3 pb-2">
+              {user ? (
+                <>
+                  <Button asChild variant="outline" size="sm" onClick={() => setOpen(false)}>
+                    <Link to="/perfil"><User className="h-4 w-4" aria-hidden />{firstName}</Link>
+                  </Button>
+                  <Button variant="ghost" size="sm" onClick={() => { setOpen(false); void signOut(); }}>
+                    <LogOut className="h-4 w-4" aria-hidden />Sair
+                  </Button>
+                </>
+              ) : !loading ? (
+                <Button asChild size="sm" onClick={() => setOpen(false)}>
+                  <Link to="/auth">Entrar</Link>
+                </Button>
+              ) : null}
+            </div>
           </nav>
         )}
       </header>
@@ -75,7 +112,10 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <footer className="border-t bg-secondary">
         <div className="mx-auto grid max-w-6xl gap-4 px-4 py-8 text-sm text-muted-foreground sm:grid-cols-2">
           <p><strong className="text-foreground">Aprender Juntos</strong> — plataforma educacional alinhada à ODS 4 da Agenda 2030 da ONU.</p>
-          <p className="sm:text-right">Educação inclusiva, equitativa e de qualidade para todos.</p>
+          <div className="flex flex-wrap gap-4 sm:justify-end">
+            <Link to="/termos" className="underline-offset-4 hover:underline">Termos de uso</Link>
+            <Link to="/privacidade" className="underline-offset-4 hover:underline">Política de privacidade</Link>
+          </div>
         </div>
       </footer>
     </div>

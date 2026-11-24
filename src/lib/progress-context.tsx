@@ -68,8 +68,9 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     const isDone = completed || old?.completed === true;
     const record = { user_id: uid, lesson_id: id, last_position: Math.max(0, Math.min(100, Math.floor(position))), completed: isDone, completed_at: isDone ? new Date().toISOString() : null };
     if (exiting && session) {
-      const url = import.meta.env.VITE_SUPABASE_URL;
-      const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+      const url = import.meta.env['VITE_SUPABASE_URL'];
+      const key = import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY'];
+      if (!url || !key) return false;
       void fetch(`${url}/rest/v1/lesson_progress?on_conflict=user_id,lesson_id`, { method: 'POST', keepalive: true, headers: { apikey: key, Authorization: `Bearer ${session.access_token}`, 'Content-Type': 'application/json', Prefer: 'resolution=merge-duplicates' }, body: JSON.stringify(record) }).catch(() => {});
       return true;
     }

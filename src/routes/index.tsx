@@ -4,6 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import hero from "@/assets/hero-educacao.jpg";
 import { courses, materials } from "@/lib/data";
+import { useStudentAuth } from "@/lib/auth-context";
+import { useProgress } from "@/lib/progress";
+import { nextLesson } from "@/lib/student-rules";
+import { StudentStatus } from "@/components/StudentStatus";
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
@@ -31,17 +35,28 @@ const quick = [
 ] as const;
 
 function Index() {
+  const { user } = useStudentAuth();
+  const { rows } = useProgress();
+  const next = user ? nextLesson(rows) : null;
   return (
     <>
+      {user && <div className="mx-auto max-w-6xl px-4 pt-4"><StudentStatus /></div>}
       <section className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-14 lg:grid-cols-2">
         <div className="animate-rise">
           <span className="inline-flex rounded-full bg-accent px-3 py-1 text-sm font-medium text-accent-foreground">ODS 4 · Educação de Qualidade</span>
           <h1 className="mt-4 text-4xl font-semibold leading-tight sm:text-6xl">Educação de qualidade transforma vidas e constrói futuros.</h1>
           <p className="mt-5 text-lg text-muted-foreground">A ODS 4 da ONU busca garantir educação inclusiva, equitativa e de qualidade, com oportunidades de aprendizagem ao longo da vida para todas as pessoas. Aqui, você aprende no seu ritmo — de graça.</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button asChild size="lg"><Link to="/cursos">Comece a aprender</Link></Button>
+            {next ? (
+              <Button asChild size="lg">
+                <Link to="/cursos/$id" params={{ id: next.id }} search={{ lesson: next.lesson }}>Continuar de onde parei</Link>
+              </Button>
+            ) : (
+              <Button asChild size="lg"><Link to="/cursos">Comece a aprender</Link></Button>
+            )}
             <Button asChild size="lg" variant="outline"><Link to="/ods4">Conheça a ODS 4</Link></Button>
           </div>
+          {next && <p className="mt-3 text-sm text-muted-foreground">Próxima aula: {next.title} · Aula {next.lesson + 1}</p>}
         </div>
         <img src={hero} alt="Estudantes e professora estudando juntos com livros e notebook" width={1280} height={960} className="rounded-2xl shadow-soft" />
       </section>

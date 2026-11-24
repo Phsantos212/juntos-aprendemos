@@ -33,7 +33,7 @@ export function nextLesson(rows: LessonRecord[]) {
   }
   return null;
 }
-export function authError(error: { message?: string; code?: string }) {
+export function authError(error: { message?: string | undefined; code?: string | undefined }) {
   const message = error.message?.toLowerCase() ?? '';
   if (message.includes('invalid login')) return 'E-mail ou senha incorretos. Confira os dados e tente novamente.';
   if (message.includes('already registered') || error.code === 'user_already_exists') return 'Este e-mail já está cadastrado. Entre ou recupere sua senha.';
