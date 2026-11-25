@@ -16,18 +16,16 @@ export type Material = {
   author: string;
   courseId: string;
   lessonIndex: number;
-  downloadPath: string;
-  fileName: string;
 };
 export const materials: Material[] = [
-  { id: "m1", title: "Guia de Educação Inclusiva", type: "Guia pedagógico", subject: "Pedagogia", level: "Docentes", author: "UNESCO (adaptado)", courseId: "sustentabilidade", lessonIndex: 3, downloadPath: "/downloads/guia-educacao-inclusiva.pdf", fileName: "guia-educacao-inclusiva.pdf" },
-  { id: "m2", title: "Apostila de Frações", type: "Apostila", subject: "Matemática", level: "Fundamental", author: "Prof. Carlos Lima", courseId: "matematica-basica", lessonIndex: 1, downloadPath: "/downloads/apostila-fracoes.pdf", fileName: "apostila-fracoes.pdf" },
-  { id: "m3", title: "Dom Casmurro", type: "Livro digital", subject: "Português", level: "Médio", author: "Machado de Assis (domínio público)", courseId: "redacao", lessonIndex: 0, downloadPath: "/downloads/dom-casmurro-guia-leitura.pdf", fileName: "dom-casmurro-guia-leitura.pdf" },
-  { id: "m4", title: "Educação e desigualdade no Brasil", type: "Artigo científico", subject: "Sociologia", level: "Superior", author: "Revista Educação & Sociedade", courseId: "historia-brasil", lessonIndex: 3, downloadPath: "/downloads/educacao-desigualdade-brasil.pdf", fileName: "educacao-desigualdade-brasil.pdf" },
-  { id: "m5", title: "Videoaula: Ciclo da água", type: "Videoaula", subject: "Ciências", level: "Fundamental", author: "Prof. Diego Martins", courseId: "sustentabilidade", lessonIndex: 1, downloadPath: "/downloads/ciclo-da-agua-apostila.pdf", fileName: "ciclo-da-agua-apostila.pdf" },
-  { id: "m6", title: "Mapas da Agenda 2030", type: "Material didático", subject: "Geografia", level: "Médio", author: "ONU Brasil (adaptado)", courseId: "sustentabilidade", lessonIndex: 0, downloadPath: "/downloads/mapas-agenda-2030.pdf", fileName: "mapas-agenda-2030.pdf" },
-  { id: "m7", title: "Os Lusíadas", type: "Livro digital", subject: "Português", level: "Médio", author: "Luís de Camões (domínio público)", courseId: "redacao", lessonIndex: 1, downloadPath: "/downloads/os-lusiadas-guia-leitura.pdf", fileName: "os-lusiadas-guia-leitura.pdf" },
-  { id: "m8", title: "Podcast: Aprender ao longo da vida", type: "Podcast", subject: "Pedagogia", level: "Todos", author: "Equipe Aprender Juntos", courseId: "alfabetizacao-digital", lessonIndex: 3, downloadPath: "/downloads/aprender-ao-longo-da-vida.pdf", fileName: "aprender-ao-longo-da-vida.pdf" },
+  { id: "m1", title: "Guia de Educação Inclusiva", type: "Guia pedagógico", subject: "Pedagogia", level: "Docentes", author: "UNESCO (adaptado)", courseId: "sustentabilidade", lessonIndex: 3 },
+  { id: "m2", title: "Apostila de Frações", type: "Apostila", subject: "Matemática", level: "Fundamental", author: "Prof. Carlos Lima", courseId: "matematica-basica", lessonIndex: 1 },
+  { id: "m3", title: "Dom Casmurro", type: "Livro digital", subject: "Português", level: "Médio", author: "Machado de Assis (domínio público)", courseId: "redacao", lessonIndex: 0 },
+  { id: "m4", title: "Educação e desigualdade no Brasil", type: "Artigo científico", subject: "Sociologia", level: "Superior", author: "Revista Educação & Sociedade", courseId: "historia-brasil", lessonIndex: 3 },
+  { id: "m5", title: "Videoaula: Ciclo da água", type: "Videoaula", subject: "Ciências", level: "Fundamental", author: "Prof. Diego Martins", courseId: "sustentabilidade", lessonIndex: 1 },
+  { id: "m6", title: "Mapas da Agenda 2030", type: "Material didático", subject: "Geografia", level: "Médio", author: "ONU Brasil (adaptado)", courseId: "sustentabilidade", lessonIndex: 0 },
+  { id: "m7", title: "Os Lusíadas", type: "Livro digital", subject: "Português", level: "Médio", author: "Luís de Camões (domínio público)", courseId: "redacao", lessonIndex: 1 },
+  { id: "m8", title: "Podcast: Aprender ao longo da vida", type: "Podcast", subject: "Pedagogia", level: "Todos", author: "Equipe Aprender Juntos", courseId: "alfabetizacao-digital", lessonIndex: 3 },
 ];
 export const odsTargets = [
   ["4.1", "Garantir que todos completem o ensino primário e secundário gratuito, equitativo e de qualidade."],

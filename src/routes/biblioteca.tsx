@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Heart, Download, Eye, Search } from "lucide-react";
-import { toast } from "sonner";
+import { Heart, Eye, Search } from "lucide-react";
 import { PageHeader } from "@/components/SiteShell";
 import { courses, materials } from "@/lib/data";
 import { useProgress } from "@/lib/progress";
@@ -34,10 +33,6 @@ function Biblioteca() {
   const fav = (id: string) => update((s) => ({ ...s, favorites: s.favorites.includes(id) ? s.favorites.filter((x) => x !== id) : [...s.favorites, id] }));
   const recordAccess = (id: string) => {
     update((s) => ({ ...s, points: s.points + 5, history: [id, ...s.history.filter((x) => x !== id)].slice(0, 10) }));
-  };
-  const handleDownload = (id: string, title: string) => {
-    recordAccess(id);
-    toast(`Baixando apostila: ${title}`, { description: "Material em PDF para uso educacional, respeitando os direitos autorais." });
   };
   const sel = "h-10 rounded-md border bg-background px-3";
   return (
@@ -73,11 +68,6 @@ function Biblioteca() {
                     <Link to="/cursos/$id" params={{ id: m.courseId }} search={{ lesson: m.lessonIndex }} onClick={() => recordAccess(m.id)}>
                       <Eye />Visualizar aula
                     </Link>
-                  </Button>
-                  <Button size="sm" variant="outline" asChild>
-                    <a href={m.downloadPath} download={m.fileName} onClick={() => handleDownload(m.id, m.title)}>
-                      <Download />Baixar apostila
-                    </a>
                   </Button>
                 </div>
               </article>
