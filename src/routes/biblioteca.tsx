@@ -20,7 +20,7 @@ export const Route = createFileRoute("/biblioteca")({
 });
 
 function Biblioteca() {
-  const { p, update } = useProgress();
+  const { p, toggleFavorite, recordLibraryAccess } = useProgress();
   const [q, setQ] = useState("");
   const [subject, setSubject] = useState("");
   const [level, setLevel] = useState("");
@@ -30,9 +30,9 @@ function Biblioteca() {
   const list = useMemo(() => materials.filter((m) =>
     (!q || (m.title + m.author + m.type).toLowerCase().includes(q.toLowerCase())) &&
     (!subject || m.subject === subject) && (!level || m.level === level) && (!onlyFav || p.favorites.includes(m.id))), [q, subject, level, onlyFav, p.favorites]);
-  const fav = (id: string) => update((s) => ({ ...s, favorites: s.favorites.includes(id) ? s.favorites.filter((x) => x !== id) : [...s.favorites, id] }));
+  const fav = (id: string) => { void toggleFavorite(id); };
   const recordAccess = (id: string) => {
-    update((s) => ({ ...s, points: s.points + 5, history: [id, ...s.history.filter((x) => x !== id)].slice(0, 10) }));
+    void recordLibraryAccess(id);
   };
   const sel = "h-10 rounded-md border bg-background px-3";
   return (

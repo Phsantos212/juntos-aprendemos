@@ -30,3 +30,4 @@ use the editor.
 <!-- LOVABLE:END -->
 
 - Keep lesson content and source metadata in a browser-safe catalog keyed by existing course IDs and module indexes, so adding educational material preserves saved progress and provides traceable references.
+- Derive and persist signed-in learning points, quiz grades, and library progress server-side via database triggers/RPCs and `src/lib/learning.functions.ts`, keeping direct client updates to `public.profiles` restricted to `full_name` and `avatar_path` so students cannot inflate their own points or level.

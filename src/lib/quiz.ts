@@ -22,3 +22,12 @@ export function gradeQuestion(q: Question, a: Answer | undefined): boolean | nul
   if (q.type === "associacao") return Array.isArray(a) && q.correct.every((v, k) => a[k] === v);
   return a === q.correct;
 }
+
+export function gradeQuizSubmission(answers: Record<number, Answer>) {
+  const total = quiz.filter((q) => q.type !== "discursiva").length;
+  let score = 0;
+  quiz.forEach((q, idx) => {
+    if (gradeQuestion(q, answers[idx]) === true) score += 1;
+  });
+  return { score, total, pointsEarned: score * 10 };
+}

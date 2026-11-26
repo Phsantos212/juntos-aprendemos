@@ -83,6 +83,21 @@ export type Database = {
     }
     Functions: {
       import_browser_progress: { Args: { payload: Json }; Returns: undefined }
+      record_graded_quiz: {
+        Args: {
+          p_date: string
+          p_score: number
+          p_total: number
+          p_user_id: string
+        }
+        Returns: Json
+      }
+      record_library_access: { Args: { p_material_id: string }; Returns: Json }
+      toggle_library_favorite: {
+        Args: { p_material_id: string }
+        Returns: Json
+      }
+      with_study_day: { Args: { p_days: Json; p_today: string }; Returns: Json }
     }
     Enums: {
       [_ in never]: never

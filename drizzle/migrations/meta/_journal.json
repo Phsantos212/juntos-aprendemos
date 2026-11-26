@@ -8,6 +8,13 @@
       "when": 1795459884789,
       "tag": "0000_student_accounts_and_progress",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1795732212413,
+      "tag": "0001_server_derived_learning_points",
+      "breakpoints": true
     }
   ]
 }

@@ -22,13 +22,15 @@ export const Route = createFileRoute("/atividades")({
 });
 
 function Atividades() {
-  const { p, update } = useProgress();
+  const { p, submitQuiz } = useProgress();
   const [i, setI] = useState(0);
   const [answers, setAnswers] = useState<Record<number, Answer>>({});
   const [checked, setChecked] = useState<Record<number, boolean | null>>({});
   const [timer, setTimer] = useState(false);
   const [secs, setSecs] = useState(0);
   const [finished, setFinished] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [result, setResult] = useState<{ score: number; total: number; pointsEarned: number } | null>(null);
   useEffect(() => { if (!timer || finished) return; const t = setInterval(() => setSecs((s) => s + 1), 1000); return () => clearInterval(t); }, [timer, finished]);
   const q = quiz[i]!;
   const a = answers[i];
@@ -36,8 +38,19 @@ function Atividades() {
   const check = () => setChecked({ ...checked, [i]: gradeQuestion(q, a) });
   const auto = quiz.filter((x) => x.type !== "discursiva").length;
   const score = Object.values(checked).filter((v) => v === true).length;
-  const finish = () => { setFinished(true); update((s) => ({ ...s, points: s.points + score * 10, quizzes: [{ date: new Date().toLocaleDateString("pt-BR"), score, total: auto }, ...s.quizzes] })); };
-  const restart = () => { setI(0); setAnswers({}); setChecked({}); setSecs(0); setFinished(false); };
+  const finish = async () => {
+    if (submitting) return;
+    setSubmitting(true);
+    const graded = await submitQuiz(answers);
+    setSubmitting(false);
+    if (!graded) return;
+    setResult(graded);
+    setFinished(true);
+  };
+  const restart = () => { setI(0); setAnswers({}); setChecked({}); setSecs(0); setFinished(false); setResult(null); };
+  const finalScore = result?.score ?? score;
+  const finalTotal = result?.total ?? auto;
+  const finalPoints = result?.pointsEarned ?? score * 10;
 
   return (
     <>
@@ -50,8 +63,8 @@ function Atividades() {
         {finished ? (
           <div className="mt-6 rounded-2xl border bg-card p-8 text-center">
             <p className="text-sm uppercase tracking-widest text-muted-foreground">Nota final</p>
-            <p className="mt-2 font-display text-6xl text-primary">{((score / auto) * 10).toFixed(1)}</p>
-            <p className="mt-2">{score} de {auto} questões objetivas corretas · +{score * 10} pontos</p>
+            <p className="mt-2 font-display text-6xl text-primary">{((finalScore / finalTotal) * 10).toFixed(1)}</p>
+            <p className="mt-2">{finalScore} de {finalTotal} questões objetivas corretas · +{finalPoints} pontos</p>
             <p className="mt-1 text-sm text-muted-foreground">A questão discursiva será avaliada pelo professor.</p>
             <Button className="mt-6" onClick={restart}>Refazer</Button>
           </div>
@@ -82,7 +95,7 @@ function Atividades() {
             <div className="mt-6 flex flex-wrap gap-2">
               <Button variant="outline" disabled={i === 0} onClick={() => setI(i - 1)}>Anterior</Button>
               <Button variant="secondary" disabled={a === undefined || i in checked} onClick={check}>Verificar</Button>
-              {i < quiz.length - 1 ? <Button onClick={() => setI(i + 1)}>Próxima</Button> : <Button onClick={finish}>Finalizar</Button>}
+              {i < quiz.length - 1 ? <Button onClick={() => setI(i + 1)}>Próxima</Button> : <Button disabled={submitting} onClick={() => void finish()}>{submitting ? "Salvando…" : "Finalizar"}</Button>}
             </div>
           </div>
         )}
