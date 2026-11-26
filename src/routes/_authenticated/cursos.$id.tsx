@@ -1,12 +1,13 @@
-import { createFileRoute, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CheckCircle2, Clock, Award, BookOpen } from "lucide-react";
+import { CheckCircle2, Clock, Award, BookOpen, Bot } from "lucide-react";
 import { courses } from "@/lib/data";
 import { useProgress } from "@/lib/progress";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { LessonContent } from "@/components/LessonContent";
+import { LessonMessages } from "@/components/LessonMessages";
 import { StudentStatus } from "@/components/StudentStatus";
 import { courseLessons } from "@/lib/lessons";
 
@@ -182,8 +183,21 @@ function Curso() {
                   <LessonContent lesson={lesson} referencePrefix={`${c.id}-${i}`} />
                   <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t pt-4">
                     <p className="text-sm text-muted-foreground">{isDone ? "Aula concluída e salva na sua conta." : "Seu progresso é salvo automaticamente durante a leitura."}</p>
-                    {!isDone && <Button size="sm" onClick={() => finishLesson(i)}>Concluir aula</Button>}
+                    <div className="flex flex-wrap gap-2">
+                      <Button asChild size="sm" variant="outline">
+                        <Link to="/tutor" search={{ course: c.id }}>
+                          <Bot className="h-4 w-4" aria-hidden />
+                          Perguntar ao Tutor de IA
+                        </Link>
+                      </Button>
+                      {!isDone && <Button size="sm" onClick={() => finishLesson(i)}>Concluir aula</Button>}
+                    </div>
                   </div>
+                  <LessonMessages
+                    channelId={`${c.id}:${i}`}
+                    title="Dúvidas e mensagens desta aula"
+                    compact
+                  />
                 </div>
               </AccordionContent>
             </AccordionItem>

@@ -11,6 +11,8 @@ const nav = [
   { to: "/cursos", label: "Cursos" },
   { to: "/biblioteca", label: "Biblioteca" },
   { to: "/atividades", label: "Atividades" },
+  { to: "/tutor", label: "Tutor IA" },
+  { to: "/mensagens", label: "Mensagens" },
   { to: "/painel", label: "Meu painel" },
 ] as const;
 

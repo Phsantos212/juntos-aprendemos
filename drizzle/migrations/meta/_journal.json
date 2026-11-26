@@ -15,6 +15,20 @@
       "when": 1795732212413,
       "tag": "0001_server_derived_learning_points",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795732958977,
+      "tag": "0002_lesson_messages_and_realtime",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1795732996914,
+      "tag": "0003_tutor_threads_and_messages",
+      "breakpoints": true
     }
   ]
 }

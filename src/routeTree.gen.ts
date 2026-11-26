@@ -21,9 +21,13 @@ import { Route as PainelRouteImport } from './routes/painel'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as TermosRouteImport } from './routes/termos'
+import { Route as AuthenticatedMensagensRouteImport } from './routes/_authenticated/mensagens'
 import { Route as AuthenticatedPerfilRouteImport } from './routes/_authenticated/perfil'
+import { Route as ApiTutorChatRouteImport } from './routes/api/tutor-chat'
 import { Route as CursosIndexRouteImport } from './routes/cursos.index'
 import { Route as AuthenticatedCursosIdRouteImport } from './routes/_authenticated/cursos.$id'
+import { Route as AuthenticatedTutorIndexRouteImport } from './routes/_authenticated/tutor.index'
+import { Route as AuthenticatedTutorThreadIdRouteImport } from './routes/_authenticated/tutor.$threadId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -84,10 +88,20 @@ const TermosRoute = TermosRouteImport.update({
   path: '/termos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedMensagensRoute = AuthenticatedMensagensRouteImport.update({
+  id: '/mensagens',
+  path: '/mensagens',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedPerfilRoute = AuthenticatedPerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ApiTutorChatRoute = ApiTutorChatRouteImport.update({
+  id: '/api/tutor-chat',
+  path: '/api/tutor-chat',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CursosIndexRoute = CursosIndexRouteImport.update({
   id: '/cursos/',
@@ -99,6 +113,17 @@ const AuthenticatedCursosIdRoute = AuthenticatedCursosIdRouteImport.update({
   path: '/cursos/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTutorIndexRoute = AuthenticatedTutorIndexRouteImport.update({
+  id: '/tutor/',
+  path: '/tutor/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTutorThreadIdRoute =
+  AuthenticatedTutorThreadIdRouteImport.update({
+    id: '/tutor/$threadId',
+    path: '/tutor/$threadId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -112,9 +137,13 @@ export interface FileRoutesByFullPath {
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
+  '/mensagens': typeof AuthenticatedMensagensRoute
   '/perfil': typeof AuthenticatedPerfilRoute
+  '/api/tutor-chat': typeof ApiTutorChatRoute
   '/cursos/': typeof CursosIndexRoute
   '/cursos/$id': typeof AuthenticatedCursosIdRoute
+  '/tutor/$threadId': typeof AuthenticatedTutorThreadIdRoute
+  '/tutor/': typeof AuthenticatedTutorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -128,9 +157,13 @@ export interface FileRoutesByTo {
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
+  '/mensagens': typeof AuthenticatedMensagensRoute
   '/perfil': typeof AuthenticatedPerfilRoute
+  '/api/tutor-chat': typeof ApiTutorChatRoute
   '/cursos': typeof CursosIndexRoute
   '/cursos/$id': typeof AuthenticatedCursosIdRoute
+  '/tutor/$threadId': typeof AuthenticatedTutorThreadIdRoute
+  '/tutor': typeof AuthenticatedTutorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -146,9 +179,13 @@ export interface FileRoutesById {
   '/privacidade': typeof PrivacidadeRoute
   '/reset-password': typeof ResetPasswordRoute
   '/termos': typeof TermosRoute
+  '/_authenticated/mensagens': typeof AuthenticatedMensagensRoute
   '/_authenticated/perfil': typeof AuthenticatedPerfilRoute
+  '/api/tutor-chat': typeof ApiTutorChatRoute
   '/cursos/': typeof CursosIndexRoute
   '/_authenticated/cursos/$id': typeof AuthenticatedCursosIdRoute
+  '/_authenticated/tutor/$threadId': typeof AuthenticatedTutorThreadIdRoute
+  '/_authenticated/tutor/': typeof AuthenticatedTutorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -164,9 +201,13 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/reset-password'
     | '/termos'
+    | '/mensagens'
     | '/perfil'
+    | '/api/tutor-chat'
     | '/cursos/'
     | '/cursos/$id'
+    | '/tutor/$threadId'
+    | '/tutor/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -180,9 +221,13 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/reset-password'
     | '/termos'
+    | '/mensagens'
     | '/perfil'
+    | '/api/tutor-chat'
     | '/cursos'
     | '/cursos/$id'
+    | '/tutor/$threadId'
+    | '/tutor'
   id:
     | '__root__'
     | '/'
@@ -197,9 +242,13 @@ export interface FileRouteTypes {
     | '/privacidade'
     | '/reset-password'
     | '/termos'
+    | '/_authenticated/mensagens'
     | '/_authenticated/perfil'
+    | '/api/tutor-chat'
     | '/cursos/'
     | '/_authenticated/cursos/$id'
+    | '/_authenticated/tutor/$threadId'
+    | '/_authenticated/tutor/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -215,6 +264,7 @@ export interface RootRouteChildren {
   PrivacidadeRoute: typeof PrivacidadeRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   TermosRoute: typeof TermosRoute
+  ApiTutorChatRoute: typeof ApiTutorChatRoute
   CursosIndexRoute: typeof CursosIndexRoute
 }
 
@@ -304,12 +354,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/mensagens': {
+      id: '/_authenticated/mensagens'
+      path: '/mensagens'
+      fullPath: '/mensagens'
+      preLoaderRoute: typeof AuthenticatedMensagensRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/perfil': {
       id: '/_authenticated/perfil'
       path: '/perfil'
       fullPath: '/perfil'
       preLoaderRoute: typeof AuthenticatedPerfilRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/api/tutor-chat': {
+      id: '/api/tutor-chat'
+      path: '/api/tutor-chat'
+      fullPath: '/api/tutor-chat'
+      preLoaderRoute: typeof ApiTutorChatRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/cursos/': {
       id: '/cursos/'
@@ -325,17 +389,37 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCursosIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/tutor/': {
+      id: '/_authenticated/tutor/'
+      path: '/tutor'
+      fullPath: '/tutor/'
+      preLoaderRoute: typeof AuthenticatedTutorIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tutor/$threadId': {
+      id: '/_authenticated/tutor/$threadId'
+      path: '/tutor/$threadId'
+      fullPath: '/tutor/$threadId'
+      preLoaderRoute: typeof AuthenticatedTutorThreadIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedMensagensRoute: typeof AuthenticatedMensagensRoute
   AuthenticatedPerfilRoute: typeof AuthenticatedPerfilRoute
   AuthenticatedCursosIdRoute: typeof AuthenticatedCursosIdRoute
+  AuthenticatedTutorThreadIdRoute: typeof AuthenticatedTutorThreadIdRoute
+  AuthenticatedTutorIndexRoute: typeof AuthenticatedTutorIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedMensagensRoute: AuthenticatedMensagensRoute,
   AuthenticatedPerfilRoute: AuthenticatedPerfilRoute,
   AuthenticatedCursosIdRoute: AuthenticatedCursosIdRoute,
+  AuthenticatedTutorThreadIdRoute: AuthenticatedTutorThreadIdRoute,
+  AuthenticatedTutorIndexRoute: AuthenticatedTutorIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -354,6 +438,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacidadeRoute: PrivacidadeRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   TermosRoute: TermosRoute,
+  ApiTutorChatRoute: ApiTutorChatRoute,
   CursosIndexRoute: CursosIndexRoute,
 }
 export const routeTree = rootRouteImport

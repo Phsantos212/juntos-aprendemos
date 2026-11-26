@@ -31,3 +31,4 @@ use the editor.
 
 - Keep lesson content and source metadata in a browser-safe catalog keyed by existing course IDs and module indexes, so adding educational material preserves saved progress and provides traceable references.
 - Derive and persist signed-in learning points, quiz grades, and library progress server-side via database triggers/RPCs and `src/lib/learning.functions.ts`, keeping direct client updates to `public.profiles` restricted to `full_name` and `avatar_path` so students cannot inflate their own points or level.
+- Keep AI Tutor calls server-side in `src/routes/api/tutor-chat.ts` and `src/lib/tutor.server.ts` using Lovable AI Gateway (`openai/gpt-6-astra` via Responses API) with per-user RLS on `public.tutor_threads` and `public.tutor_messages`, and keep real-time student messaging on `public.lesson_messages` with server-populated author names so `public.profiles` remains strictly private per user.
