@@ -10,6 +10,8 @@ import { LessonContent } from "@/components/LessonContent";
 import { LessonMessages } from "@/components/LessonMessages";
 import { StudentStatus } from "@/components/StudentStatus";
 import { courseLessons } from "@/lib/lessons";
+import { lessonChecks } from "@/lib/lesson-checks";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/cursos/$id")({
   validateSearch: (s: Record<string, unknown>): { lesson?: number } => {
@@ -39,7 +41,7 @@ export const Route = createFileRoute("/_authenticated/cursos/$id")({
 function Curso() {
   const c = Route.useLoaderData();
   const search = Route.useSearch();
-  const { p, rows, loading, saveLesson } = useProgress();
+  const { p, rows, loading, saveLesson, completeLesson } = useProgress();
   const done = p.lessonsDone[c.id] ?? [];
   const lessons = courseLessons[c.id] ?? [];
   const pct = Math.round((done.length / c.modules.length) * 100);
@@ -57,6 +59,9 @@ function Curso() {
 
   const initialIndex = search.lesson !== undefined && search.lesson < c.modules.length ? search.lesson : (nextIndex ?? 0);
   const [openValue, setOpenValue] = useState<string>(`lesson-${initialIndex}`);
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<string, number>>({});
+  const [checkErrors, setCheckErrors] = useState<Record<string, string>>({});
+  const [checkingLesson, setCheckingLesson] = useState<string | null>(null);
   const activeIdx = openValue.startsWith("lesson-") ? Number(openValue.slice(7)) : null;
   const contentRef = useRef<HTMLDivElement | null>(null);
   const positionRef = useRef(0);
@@ -87,7 +92,7 @@ function Curso() {
 
     if (!existing) {
       lastSavedRef.current = 0;
-      void saveLesson(lessonId, 0, false);
+      void saveLesson(lessonId, 0);
     } else if (initialPos > 5 && initialPos < 95 && resumedRef.current !== lessonId) {
       resumedRef.current = lessonId;
       requestAnimationFrame(() => {
@@ -101,9 +106,9 @@ function Curso() {
     const onScroll = () => {
       const nextPos = calcScrollPct();
       positionRef.current = nextPos;
-      if (nextPos >= 92 && !existing?.completed && lastSavedRef.current < 100) {
+      if (nextPos >= 95 && lastSavedRef.current < 100) {
         lastSavedRef.current = 100;
-        void saveLesson(lessonId, 100, true);
+        void saveLesson(lessonId, 100);
       }
     };
 
@@ -112,7 +117,7 @@ function Curso() {
       positionRef.current = pos;
       if (pos > lastSavedRef.current) {
         lastSavedRef.current = pos;
-        void saveLesson(lessonId, pos, pos >= 95);
+        void saveLesson(lessonId, pos);
       }
     }, 5000);
 
@@ -120,7 +125,7 @@ function Curso() {
       const pos = calcScrollPct();
       if (pos > lastSavedRef.current) {
         lastSavedRef.current = pos;
-        void saveLesson(lessonId, pos, pos >= 95, true);
+        void saveLesson(lessonId, pos, true);
       }
     };
 
@@ -134,11 +139,31 @@ function Curso() {
     };
   }, [loading, activeIdx, c.id, recordFor, saveLesson, calcScrollPct]);
 
-  const finishLesson = (i: number) => {
+  const finishLesson = async (i: number) => {
     const lessonId = `${c.id}:${i}`;
+    const chosen = selectedAnswers[lessonId];
+    if (chosen === undefined) {
+      setCheckErrors((prev) => ({ ...prev, [lessonId]: "Escolha uma alternativa antes de concluir a aula." }));
+      return;
+    }
+    setCheckingLesson(lessonId);
+    setCheckErrors((prev) => {
+      const next = { ...prev };
+      delete next[lessonId];
+      return next;
+    });
+    const res = await completeLesson(lessonId, chosen);
+    setCheckingLesson(null);
+    if (!res.passed) {
+      setCheckErrors((prev) => ({
+        ...prev,
+        [lessonId]: res.message ?? "Resposta incorreta. Revise o conteúdo da aula e tente novamente.",
+      }));
+      return;
+    }
     lastSavedRef.current = 100;
     positionRef.current = 100;
-    void saveLesson(lessonId, 100, true);
+    toast.success(res.pointsEarned > 0 ? `Aula concluída! +${res.pointsEarned} pontos.` : "Aula concluída e salva na sua conta.");
   };
 
   return (
@@ -181,6 +206,45 @@ function Curso() {
                     <p className="mb-4 text-sm text-muted-foreground">Retomando de onde você parou ({record.last_position}%).</p>
                   )}
                   <LessonContent lesson={lesson} referencePrefix={`${c.id}-${i}`} />
+                  {!isDone && lessonChecks[`${c.id}:${i}`] && (
+                    <fieldset className="mt-6 rounded-xl border bg-muted/30 p-4">
+                      <legend className="px-1 text-sm font-semibold">Verificação para concluir a aula</legend>
+                      <p className="mt-1 text-sm">{lessonChecks[`${c.id}:${i}`]?.prompt}</p>
+                      <div className="mt-3 space-y-2">
+                        {lessonChecks[`${c.id}:${i}`]?.options.map((opt, optIdx) => {
+                          const lessonId = `${c.id}:${i}`;
+                          const checked = selectedAnswers[lessonId] === optIdx;
+                          return (
+                            <label
+                              key={opt}
+                              className={`flex cursor-pointer items-start gap-2.5 rounded-lg border p-3 text-sm transition-colors ${checked ? "border-primary bg-background" : "border-border bg-background/60 hover:bg-background"}`}
+                            >
+                              <input
+                                type="radio"
+                                name={`check-${lessonId}`}
+                                value={optIdx}
+                                checked={checked}
+                                onChange={() => {
+                                  setSelectedAnswers((prev) => ({ ...prev, [lessonId]: optIdx }));
+                                  setCheckErrors((prev) => {
+                                    if (!prev[lessonId]) return prev;
+                                    const next = { ...prev };
+                                    delete next[lessonId];
+                                    return next;
+                                  });
+                                }}
+                                className="mt-0.5 accent-primary"
+                              />
+                              <span>{opt}</span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                      {checkErrors[`${c.id}:${i}`] && (
+                        <p role="alert" className="mt-3 text-sm font-medium text-destructive">{checkErrors[`${c.id}:${i}`]}</p>
+                      )}
+                    </fieldset>
+                  )}
                   <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t pt-4">
                     <p className="text-sm text-muted-foreground">{isDone ? "Aula concluída e salva na sua conta." : "Seu progresso é salvo automaticamente durante a leitura."}</p>
                     <div className="flex flex-wrap gap-2">
@@ -190,7 +254,15 @@ function Curso() {
                           Perguntar ao Tutor de IA
                         </Link>
                       </Button>
-                      {!isDone && <Button size="sm" onClick={() => finishLesson(i)}>Concluir aula</Button>}
+                      {!isDone && (
+                        <Button
+                          size="sm"
+                          disabled={checkingLesson === `${c.id}:${i}`}
+                          onClick={() => void finishLesson(i)}
+                        >
+                          {checkingLesson === `${c.id}:${i}` ? "Verificando..." : "Concluir aula"}
+                        </Button>
+                      )}
                     </div>
                   </div>
                   <LessonMessages

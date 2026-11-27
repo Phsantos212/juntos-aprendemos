@@ -36,6 +36,13 @@
       "when": 1795802522616,
       "tag": "0004_restrict_lesson_messages_rls_channels",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1795803198732,
+      "tag": "0005_verify_lesson_completion_and_browser_import",
+      "breakpoints": true
     }
   ]
 }

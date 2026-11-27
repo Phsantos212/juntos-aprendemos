@@ -197,6 +197,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      complete_verified_lesson: {
+        Args: { p_lesson_id: string; p_user_id: string }
+        Returns: Json
+      }
       import_browser_progress: { Args: { payload: Json }; Returns: undefined }
       is_valid_message_channel: {
         Args: { p_channel_id: string }
@@ -212,6 +216,24 @@ export type Database = {
         Returns: Json
       }
       record_library_access: { Args: { p_material_id: string }; Returns: Json }
+      save_lesson_position: {
+        Args: { p_lesson_id: string; p_position: number }
+        Returns: {
+          completed: boolean
+          completed_at: string | null
+          id: string
+          last_position: number
+          lesson_id: string
+          updated_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "lesson_progress"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       toggle_library_favorite: {
         Args: { p_material_id: string }
         Returns: Json
