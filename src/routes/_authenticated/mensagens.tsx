@@ -35,7 +35,7 @@ function MensagensPage() {
         subtitle="Tire dúvidas sobre os cursos e converse em tempo real com a comunidade."
       />
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 lg:grid-cols-[260px_1fr]">
-        <aside aria-label="Canais de conversa" className="space-y-1">
+        <aside aria-label="Canais de conversa" className="min-w-0 space-y-1">
           <h2 className="px-2 pb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Canais disponíveis
           </h2>

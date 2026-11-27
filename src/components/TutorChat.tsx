@@ -121,24 +121,23 @@ export function TutorChat({
       <Conversation className="min-h-0 flex-1">
         <ConversationContent className="gap-6 px-4 py-6">
           {messages.length === 0 ? (
-            <ConversationEmptyState
-              icon={
-                <img
-                  src={tutorEmblem}
-                  alt="Tutor Pedagógico IA"
-                  width={816}
-                  height={816}
-                  loading="lazy"
-                  className="h-14 w-14 rounded-full object-cover shadow-sm"
-                />
-              }
-              title="Como posso ajudar nos seus estudos hoje?"
-              description={
-                course
-                  ? `Tire dúvidas sobre ${course.title}, peça exemplos práticos ou revise um conceito passo a passo.`
-                  : "Pergunte sobre qualquer curso, peça explicações passo a passo ou pratique com exemplos."
-              }
-            >
+            <ConversationEmptyState>
+              <img
+                src={tutorEmblem}
+                alt="Tutor Pedagógico IA"
+                width={816}
+                height={816}
+                loading="lazy"
+                className="h-14 w-14 rounded-full object-cover shadow-sm"
+              />
+              <div className="space-y-1">
+                <h2 className="text-base font-semibold">Como posso ajudar nos seus estudos hoje?</h2>
+                <p className="max-w-md text-sm text-muted-foreground">
+                  {course
+                    ? `Tire dúvidas sobre ${course.title}, peça exemplos práticos ou revise um conceito passo a passo.`
+                    : "Pergunte sobre qualquer curso, peça explicações passo a passo ou pratique com exemplos."}
+                </p>
+              </div>
               <div className="mt-4 flex max-w-lg flex-wrap justify-center gap-2">
                 {SUGGESTIONS.map((s) => (
                   <button

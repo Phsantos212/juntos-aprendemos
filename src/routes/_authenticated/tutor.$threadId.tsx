@@ -107,7 +107,7 @@ function TutorThreadPage() {
 
   return (
     <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 lg:grid-cols-[270px_1fr]">
-      <aside aria-label="Conversas com o tutor" className="flex flex-col gap-3">
+      <aside aria-label="Conversas com o tutor" className="flex min-w-0 flex-col gap-3">
         <div className="flex items-center justify-between gap-2">
           <h1 className="text-xl font-semibold">Tutor IA</h1>
           <Button
