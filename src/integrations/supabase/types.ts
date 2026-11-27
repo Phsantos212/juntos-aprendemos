@@ -198,6 +198,10 @@ export type Database = {
     }
     Functions: {
       import_browser_progress: { Args: { payload: Json }; Returns: undefined }
+      is_valid_message_channel: {
+        Args: { p_channel_id: string }
+        Returns: boolean
+      }
       record_graded_quiz: {
         Args: {
           p_date: string

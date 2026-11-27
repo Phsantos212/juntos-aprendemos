@@ -29,6 +29,13 @@
       "when": 1795732996914,
       "tag": "0003_tutor_threads_and_messages",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1795802522616,
+      "tag": "0004_restrict_lesson_messages_rls_channels",
+      "breakpoints": true
     }
   ]
 }
